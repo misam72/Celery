@@ -2,7 +2,7 @@ from celery import Celery
 import time
 from celery.utils.log import get_task_logger
 
-app = Celery(main="one", broker="amqp://guest:guest@0.0.0.0:5672", backend="rpc://")
+app = Celery(main="SimpleTask", broker="amqp://guest:guest@0.0.0.0:5672", backend="rpc://")
 logger = get_task_logger(__name__)
 
 # change configurations
@@ -17,13 +17,13 @@ app.conf.update(
 )
 
 
-@app.task(name="one.add", task_time_limit=5)
+@app.task(name="SimpleTask.add", task_time_limit=5)
 def add(a, b):
     time.sleep(10)
     return a + b
 
 
-@app.task(name="one.div", bind=True, default_retry_delay=100)
+@app.task(name="SimpleTask.div", bind=True, default_retry_delay=100)
 def div(self, a, b):
     try:
         return a / b
