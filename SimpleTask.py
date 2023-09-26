@@ -1,4 +1,4 @@
-from celery import Celery
+from celery import Celery, signals
 import time
 from celery.utils.log import get_task_logger
 
@@ -34,3 +34,27 @@ def div(self, a, b):
         logger.info("Sorry...")
         # delay= 100 and max_retires=3(default value)
         self.retry()
+
+@signals.task_prerun.connect
+def print_hello(sender=None, **kwargs):
+    print('hello.')
+
+@signals.task_postrun.connect
+def print_goodbye(sender=None, **kwargs):
+    print('good bye.')
+
+@signals.task_success.connect(sender=add)
+def add_success(sender=None, **kwargs):
+    print('add did.')
+
+@signals.task_success.connect(sender=div)
+def div_success(sender=None, **kwargs):
+    print('div did.')
+    
+@signals.worker_shutdown.connect
+def goodbye_worker(sender=None, **kwargs):
+    print('Worker: Goodbye dude.')
+
+@signals.worker_ready.connect
+def hi_worker(sender=None, **kwargs):
+    print('Worker: Hi dude.')
