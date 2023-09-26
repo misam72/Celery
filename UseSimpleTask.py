@@ -1,4 +1,4 @@
-from SimpleTask import add, div
+from SimpleTask import add, div, show
 
 # running flower:
 # celery --broker=amqp://guest:guest@0.0.0.0:5672// flower
