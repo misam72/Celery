@@ -74,3 +74,7 @@ def goodbye_worker(sender=None, **kwargs):
 @signals.worker_ready.connect
 def hi_worker(sender=None, **kwargs):
     print("Worker: Hi dude.")
+
+@signals.task_postrun.connect
+def show_info(sender=None, **kwargs):
+    print(sender.request)
